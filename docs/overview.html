@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Pactia overview — AI-native product intent, three altitudes, packages, and the toolchain."
+    />
+    <title>Overview — Pactia</title>
+    <link rel="icon" href="../assets/pactia-logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/site.css" />
+    <link rel="stylesheet" href="../assets/docs.css" />
+    <script src="../assets/site-nav.js"></script>
+    <script src="../assets/docs.js"></script>
+  </head>
+  <body class="docs-page" data-nav-page="overview">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container">
+        <a class="brand" data-site-brand href="../index.html">
+          <img
+            class="brand__logo"
+            src="../assets/pactia-logo.png"
+            alt=""
+            height="40"
+          />
+          PACTIA
+        </a>
+        <div class="site-header__actions" data-site-header-actions></div>
+      </div>
+    </header>
+
+    <div class="docs-layout container">
+      <aside class="docs-sidebar" aria-label="On this page">
+        <p class="docs-sidebar__label">&gt; on_this_page</p>
+        <nav class="docs-toc" id="docs-toc"></nav>
+      </aside>
+
+      <main id="main" class="docs-main">
+        <p class="label">&gt; documentation / overview</p>
+        <article class="docs-content" id="docs-content">
+<h1 id="pactia-overview">Pactia Overview</h1>
+<p><strong>Pactia is the intent language for the AI era.</strong> You write what must stay true — in plain prose, structured tags, or both — and share that intent across teams through <strong>versioned packages</strong>. Same <code>.pactia</code> works with any coding agent; the toolchain compiles it once and adapts output per consumer.</p>
+<blockquote>
+<p><strong>The one rule that matters:</strong> Pactia never requires more than prose. Every tag, macro, and keyword beyond <code>pactia</code> + <code>product</code> is something you reach for when you want enforcement — never something you must learn on day one.</p>
+</blockquote>
+<hr>
+<h2 id="three-altitudes">Three altitudes</h2>
+<p>Every Pactia file is legal at <strong>altitude 0</strong>. Tags are an opt-in upgrade, one fact at a time.</p>
+<p><strong>Prose is not a placeholder.</strong> A few well-written <code>&gt;</code> lines can carry product definition, roles, API behavior, and agent policy — the same facts tags formalize later.</p>
+<h3 id="altitude-0--prose-only">Altitude 0 — prose only</h3>
+<pre class="docs-pre docs-pre--pactia"><code class="docs-code docs-code--pactia pactia-highlight"><span class="pactia-tm-keyword">pactia</span> <span class="pactia-tm-number">1.0</span>
+
+<span class="pactia-tm-keyword">product</span> <span class="pactia-tm-type">MyApp</span> {
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">A mobile app for tracking personal fitness goals and sharing progress with friends.</span>
+  <span class="pactia-tm-prose-marker">&gt;</span>
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Users sign up with email. Each user owns their workouts; only the owner may edit or delete.</span>
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Friends see shared workouts in a feed — read-only across users, no cross-account writes.</span>
+  <span class="pactia-tm-prose-marker">&gt;</span>
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Backend is Rust on actix-web with PostgreSQL. Mobile clients use REST over HTTPS.</span>
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">List endpoints use cursor pagination (default 20, max 100). Offsets are not supported.</span>
+  <span class="pactia-tm-prose-marker">&gt;</span>
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Auth: bearer JWT. Workout APIs require a logged-in customer; scope is owner rows only.</span>
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Never commit secrets. Map all handler errors to our standard envelope before returning.</span>
+<span class="pactia-tm-punct">}</span>
+</code></pre><p>That file is complete. An agent can implement from prose alone.</p>
+<h3 id="altitude-1--light-tagging">Altitude 1 — light tagging</h3>
+<pre class="docs-pre docs-pre--pactia"><code class="docs-code docs-code--pactia pactia-highlight"><span class="pactia-tm-keyword">pactia</span> <span class="pactia-tm-number">1.0</span>
+
+<span class="pactia-tm-keyword">import</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">pactia/kernel</span>;
+<span class="pactia-tm-keyword">import</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">pactia/rust-stack</span>;
+
+<span class="pactia-tm-keyword">product</span> <span class="pactia-tm-type">MyApp</span> {
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">A mobile app for tracking personal fitness goals and sharing progress with friends.</span>
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Users sign up with email. Each user owns their workouts; only the owner may edit or delete.</span>
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">List endpoints use cursor pagination. Never commit secrets; use our error envelope.</span>
+
+  <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">rust-stack</span>
+
+  <span class="pactia-tm-keyword">module</span> <span class="pactia-tm-type">fitness</span> {
+    <span class="pactia-tm-keyword">service</span> <span class="pactia-tm-type">WorkoutService</span> {
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">auth</span> <span class="pactia-tm-type">Customer</span>
+      <span class="pactia-tm-tag">@@</span><span class="pactia-tm-tag">output</span> <span class="pactia-tm-type">WorkoutListResponse</span>
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">api</span> list_workouts {
+        <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Customers browse their workout history, newest first, paginated.</span>
+<span class="pactia-tm-punct">      }</span>
+
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">auth</span> <span class="pactia-tm-type">Customer</span>
+      <span class="pactia-tm-tag">@@</span><span class="pactia-tm-tag">output</span> <span class="pactia-tm-type">WorkoutResponse</span>
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">api</span> create_workout {
+        <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Customer logs a new workout. Reject payloads over 4 KB.</span>
+<span class="pactia-tm-punct">      }</span>
+<span class="pactia-tm-punct">    }</span>
+<span class="pactia-tm-punct">  }</span>
+<span class="pactia-tm-punct">}</span>
+</code></pre><p>Add tags only where enforcement or reuse helps. Everything else stays prose.</p>
+<h3 id="altitude-2--fully-specified">Altitude 2 — fully specified</h3>
+<pre class="docs-pre docs-pre--pactia"><code class="docs-code docs-code--pactia pactia-highlight"><span class="pactia-tm-keyword">pactia</span> <span class="pactia-tm-number">1.0</span>
+
+<span class="pactia-tm-keyword">import</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">pactia/kernel</span>;
+<span class="pactia-tm-keyword">import</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">pactia/rust-stack</span>;
+
+<span class="pactia-tm-keyword">product</span> <span class="pactia-tm-type">Fleet</span> {
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">B2B fleet management — customers manage their own vehicles; admins see all tenants.</span>
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">List endpoints are cursor-paginated. Mutations are audit-logged.</span>
+
+  <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">rust-stack</span>
+
+  <span class="pactia-tm-keyword">module</span> <span class="pactia-tm-type">fleet</span> {
+    <span class="pactia-tm-keyword">service</span> <span class="pactia-tm-type">FleetService</span> {
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">auth</span> <span class="pactia-tm-punct">{</span> <span class="pactia-tm-key">roles</span>: [<span class="pactia-tm-type">Customer</span>, <span class="pactia-tm-type">Admin</span>] <span class="pactia-tm-punct">}</span>
+      <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">list</span>
+      <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">paginated</span>
+      <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">owner</span>
+      <span class="pactia-tm-tag">@@</span><span class="pactia-tm-tag">output</span> <span class="pactia-tm-type">VehicleListResponse</span>
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">api</span> list_vehicles {
+        <span class="pactia-tm-key">method</span>: <span class="pactia-tm-constant">GET</span>,
+        <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">/api/v1/vehicles</span><span class="pactia-tm-string">&quot;</span>,
+        <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Customers see only vehicles where customerId matches their account.</span>
+<span class="pactia-tm-punct">      }</span>
+<span class="pactia-tm-punct">    }</span>
+<span class="pactia-tm-punct">  }</span>
+<span class="pactia-tm-punct">}</span>
+</code></pre><p>Same language, same compiler — your chosen density.</p>
+<h3 id="same-story-less-syntax">Same story, less syntax</h3>
+<div class="docs-table-wrap"><table class="docs-table">
+<thead>
+<tr>
+<th>Concern</th>
+<th>Altitude 0 (prose)</th>
+<th>Tag when you need…</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Who may call an API</td>
+<td><code>&gt; Auth: bearer JWT; owner rows only</code></td>
+<td><code>@auth Customer</code></td>
+</tr>
+<tr>
+<td>List behavior</td>
+<td><code>&gt; Cursor pagination, default 20</code></td>
+<td><code>#list</code> / <code>#paginated</code></td>
+</tr>
+<tr>
+<td>Response shape</td>
+<td><code>&gt; Return list + optional nextCursor</code></td>
+<td><code>@@output WorkoutListResponse</code></td>
+</tr>
+<tr>
+<td>Wire route</td>
+<td><code>&gt; GET /workouts for history</code></td>
+<td><code>@api { method, path }</code></td>
+</tr>
+</tbody></table></div>
+<p>Start with prose. Move right only when a gate or <strong>package reuse</strong> justifies the syntax.</p>
+<hr>
+<h2 id="philosophy">Philosophy</h2>
+<p><strong>Pactia answers:</strong> <em>what should stay true about this product — and what context should every AI session inherit?</em></p>
+<div class="docs-table-wrap"><table class="docs-table">
+<thead>
+<tr>
+<th>Era</th>
+<th>You write</th>
+<th>Machine / AI does</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>3GL (C, Rust)</td>
+<td>Algorithms, types</td>
+<td>Execute</td>
+</tr>
+<tr>
+<td>4GL (SQL, config)</td>
+<td>Desired state</td>
+<td>Reconcile</td>
+</tr>
+<tr>
+<td><strong>Pactia</strong></td>
+<td>Intent (prose + tags)</td>
+<td>Implement; optional gates verify facts</td>
+</tr>
+</tbody></table></div>
+<p>Pactia does <strong>not</strong> replace Rust, React, or Swift. It sits above them as a durable layer between humans, agents, and generated code.</p>
+<h3 id="from-source-to-agent-context">From source to agent context</h3>
+<p>Humans author <code>.pactia</code> once. <strong>pactiac</strong> lowers it to neutral JSON IR. <strong>BSC</strong> renders agent briefs for your toolchain (Cursor, Claude Code, Copilot, …) and may optionally expand them with an LLM — grounded in IR, not free-form chat.</p>
+<pre class="docs-pre"><code class="docs-code docs-code--">.pactia  ──pactiac──▶  workspace.json (+ slice files)     (*.module.json, *.model.json, *.service.json)
+                              │
+                              └── bsc render ──▶  agent briefs (target profile)
+                                        │
+                                        └── bsc expand (LLM, optional) ──▶  richer agent context
+                                              grounded in JSON · provenance: GENERATED</code></pre><div class="docs-table-wrap"><table class="docs-table">
+<thead>
+<tr>
+<th>Phase</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>pactiac compile</code></td>
+<td>Lower intent to neutral IR (deterministic)</td>
+</tr>
+<tr>
+<td><code>bsc render</code></td>
+<td>Map IR → agent briefs per target</td>
+</tr>
+<tr>
+<td><code>bsc expand</code></td>
+<td>Optional richer context from IR</td>
+</tr>
+</tbody></table></div>
+<h3 id="multiline-prose">Multiline prose</h3>
+<pre class="docs-pre docs-pre--pactia"><code class="docs-code docs-code--pactia pactia-highlight"><span class="pactia-tm-keyword">product</span> <span class="pactia-tm-type">InternalTools</span> {
+  <span class="pactia-tm-prose-marker">&gt;&gt;</span> <span class="pactia-tm-prose">Every handler validates input at the boundary; domain layer assumes invariants already hold.</span>
+<span class="pactia-tm-prose">  Retries are idempotent only where prose or tags say so — never blanket retry on POST. </span><span class="pactia-tm-prose-marker">&gt;&gt;</span>
+
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Shorter rules still use one line each.</span>
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Never commit secrets.</span>
+<span class="pactia-tm-punct">}</span>
+</code></pre><hr>
+<h2 id="packages--share-everything-not-just-code">Packages — share everything, not just code</h2>
+<p>Chat prompts die in history. <strong>Pactia packages</strong> let you pin and reuse intent the way Go modules pin code:</p>
+<ul>
+<li><strong><code>import @scope/name</code></strong> — pull in kernel tags, stack macros, compliance rules, or your org&#39;s standards</li>
+<li><strong><code>context { path: &quot;…&quot; }</code></strong> — attach markdown specs, agent rules, schemas — versioned beside your product</li>
+<li><strong><code>pactia.toml</code> + <code>pactia.lock</code></strong> — reproducible installs from git tags</li>
+<li><strong>Prose, tags, and macros travel together</strong> — one package can ship agent policy, API patterns, and platform defaults</li>
+</ul>
+<h3 id="package-manager-high-level">Package manager (high level)</h3>
+<p>Like Rust has <strong>cargo</strong> and <strong>crates.io</strong>, Pactia has <strong>pactia</strong> (CLI) and <strong>pactia.io</strong> (registry of intent packages):</p>
+<div class="docs-table-wrap"><table class="docs-table">
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>pactia init</code></td>
+<td>Start a workspace</td>
+</tr>
+<tr>
+<td><code>pactia add</code></td>
+<td>Add a dependency from git / registry</td>
+</tr>
+<tr>
+<td><code>pactia install</code></td>
+<td>Vendor packages per lockfile</td>
+</tr>
+<tr>
+<td><code>pactia build</code></td>
+<td>Compile workspace → IR</td>
+</tr>
+</tbody></table></div>
+<p>You do not copy-paste agent rules between repos. You <strong>import</strong> a package and inherit prose, context files, macros, and tags in every session.</p>
+<h3 id="sharing-prose-and-context">Sharing prose and context</h3>
+<pre class="docs-pre docs-pre--pactia"><code class="docs-code docs-code--pactia pactia-highlight"><span class="pactia-tm-keyword">pactia</span> <span class="pactia-tm-number">1.0</span>
+
+<span class="pactia-tm-keyword">import</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">pactia/kernel</span>;
+<span class="pactia-tm-keyword">import</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">pactia/rust-stack</span>;
+<span class="pactia-tm-keyword">import</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">acme/agent-standards</span>;
+
+<span class="pactia-tm-keyword">product</span> <span class="pactia-tm-type">Payments</span> {
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">B2B payments API. Bearer JWT. Owner-scoped rows on every list.</span>
+
+  <span class="pactia-tm-keyword">context</span> <span class="pactia-tm-constant">security_policy</span> {
+    <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">./context/security.md</span><span class="pactia-tm-string">&quot;</span>,
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Normative auth, logging, and PII rules for all services in this product.</span>
+<span class="pactia-tm-punct">  }</span>
+
+  <span class="pactia-tm-keyword">context</span> <span class="pactia-tm-constant">openapi_style</span> {
+    <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">./context/openapi-style.md</span><span class="pactia-tm-string">&quot;</span>,
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">How we name operations, errors, and pagination in public APIs.</span>
+<span class="pactia-tm-punct">  }</span>
+
+  <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">rust-stack</span>
+
+  <span class="pactia-tm-keyword">module</span> <span class="pactia-tm-type">api</span> {
+    <span class="pactia-tm-prose-marker">&gt; </span>${<span class="pactia-tm-constant">security_policy</span>}<span class="pactia-tm-prose"> applies to every handler in this module.</span>
+    <span class="pactia-tm-prose-marker">&gt; </span>${<span class="pactia-tm-constant">openapi_style</span>}<span class="pactia-tm-prose"> applies to every @api block.</span>
+
+    <span class="pactia-tm-keyword">service</span> <span class="pactia-tm-type">PaymentService</span> {
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">auth</span> <span class="pactia-tm-type">Customer</span>
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">api</span> list_payments {
+        <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Cursor pagination, default 20. Customers see only their rows.</span>
+<span class="pactia-tm-punct">      }</span>
+<span class="pactia-tm-punct">    }</span>
+<span class="pactia-tm-punct">  }</span>
+<span class="pactia-tm-punct">}</span>
+</code></pre><p>Publish <code>@acme/agent-standards</code> once; every product imports the same prose, context paths, and macros. See <a href="https://github.com/pactia-lang/spec/blob/main/docs/packages.md" target="_blank" rel="noopener noreferrer">packages.md</a>.</p>
+<hr>
+<h2 id="what-pactia-is">What Pactia is</h2>
+<ul>
+<li>An <strong>intent language</strong> — durable <code>.pactia</code> files, not disposable chat</li>
+<li><strong>Graded precision</strong> — prose-only to fully tagged; you choose the level</li>
+<li><strong>Model and platform agnostic</strong> — same source → same IR → any agent</li>
+<li><strong>Shareable through packages</strong> — git-pinned imports for prose, context, tags, and macros</li>
+<li>A <strong>whole-product spec</strong> — backend, web, mobile, desktop in one workspace</li>
+</ul>
+<h2 id="what-pactia-is-not">What Pactia is not</h2>
+<div class="docs-table-wrap"><table class="docs-table">
+<thead>
+<tr>
+<th>Pactia is</th>
+<th>Pactia is not</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Intent for whole products</td>
+<td>A replacement for Rust or React</td>
+</tr>
+<tr>
+<td>Prose + optional tags</td>
+<td>A mandate to specify everything</td>
+</tr>
+<tr>
+<td>Shareable, versioned packages</td>
+<td>Ephemeral ChatGPT one-offs</td>
+</tr>
+<tr>
+<td>AI-neutral compiled output</td>
+<td>A single-vendor prompt format</td>
+</tr>
+</tbody></table></div>
+<p>Formalized facts are enforceable when you tag them; implementation stays free.</p>
+<h2 id="design-principles">Design principles</h2>
+<ol>
+<li><strong>Intent over implementation</strong> — declare what must stay true.</li>
+<li><strong>Graded precision</strong> — prose-only to fully tagged.</li>
+<li><strong>Share through packages</strong> — reuse intent via imports, not copy-paste.</li>
+<li><strong>AI-native artifact</strong> — permanent files every session inherits.</li>
+<li><strong>Strict when structured</strong> — tags parse the same way everywhere.</li>
+<li><strong>Free when prose</strong> — guidance until you promote a line to a tag.</li>
+</ol>
+<h2 id="minimal-example">Minimal example</h2>
+<p>Roles and entities tagged where structure helps; business rules stay prose until you need enforcement.</p>
+<pre class="docs-pre docs-pre--pactia"><code class="docs-code docs-code--pactia pactia-highlight"><span class="pactia-tm-keyword">pactia</span> <span class="pactia-tm-number">1.0</span>
+
+<span class="pactia-tm-keyword">import</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">pactia/kyc-compliance</span>;
+<span class="pactia-tm-keyword">import</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">pactia/rust-stack</span>;
+
+<span class="pactia-tm-keyword">product</span> <span class="pactia-tm-type">P2PExchange</span> {
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Peer-to-peer marketplace with escrow. KYC before first trade over the platform limit.</span>
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Disputes: admins may freeze a trade; traders cannot self-resolve.</span>
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Never hold card data; never log full bank account numbers.</span>
+
+  <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">rust-stack</span>
+
+  <span class="pactia-tm-keyword">module</span> <span class="pactia-tm-type">exchange</span> {
+    <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">actor</span> traders <span class="pactia-tm-punct">{</span> <span class="pactia-tm-key">role</span>: <span class="pactia-tm-type">Trader</span>, <span class="pactia-tm-key">capabilities</span>: [create_offers, take_trades], <span class="pactia-tm-punct">}</span>
+    <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">actor</span> admins <span class="pactia-tm-punct">{</span> <span class="pactia-tm-key">role</span>: <span class="pactia-tm-type">Admin</span>, <span class="pactia-tm-key">capabilities</span>: [resolve_disputes], <span class="pactia-tm-punct">}</span>
+
+    <span class="pactia-tm-keyword">model</span> {
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">entity</span> Trade {
+        <span class="pactia-tm-tag">@@</span><span class="pactia-tm-tag">pk</span> <span class="pactia-tm-type">id</span>: <span class="pactia-tm-type">uuid</span>,
+        <span class="pactia-tm-key">buyerId</span>: <span class="pactia-tm-type">uuid</span>,
+        <span class="pactia-tm-key">sellerId</span>: <span class="pactia-tm-type">uuid</span>,
+        <span class="pactia-tm-key">status</span>: <span class="pactia-tm-type">TradeStatus</span>,
+<span class="pactia-tm-punct">      }</span>
+<span class="pactia-tm-punct">    }</span>
+
+    <span class="pactia-tm-keyword">service</span> <span class="pactia-tm-type">TradeService</span> {
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">auth</span> <span class="pactia-tm-punct">{</span> <span class="pactia-tm-key">roles</span>: [<span class="pactia-tm-type">Trader</span>] <span class="pactia-tm-punct">}</span>
+      <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">buyer</span>
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">api</span> mark_payment_sent {
+        <span class="pactia-tm-key">method</span>: <span class="pactia-tm-constant">POST</span>,
+        <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">/api/v1/trades/:id/mark-payment-sent</span><span class="pactia-tm-string">&quot;</span>,
+        <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Buyer asserts fiat was sent. Idempotent if already sent.</span>
+<span class="pactia-tm-punct">      }</span>
+<span class="pactia-tm-punct">    }</span>
+<span class="pactia-tm-punct">  }</span>
+<span class="pactia-tm-punct">}</span>
+</code></pre><hr>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="https://github.com/pactia-lang/spec/blob/main/docs/language-spec.md" target="_blank" rel="noopener noreferrer">language-spec.md</a> — grammar and workspace</li>
+<li><a href="https://github.com/pactia-lang/spec/blob/main/docs/packages.md" target="_blank" rel="noopener noreferrer">packages.md</a> — composition and package manager</li>
+<li><a href="https://github.com/pactia-lang/spec/blob/main/docs/compilation.md" target="_blank" rel="noopener noreferrer">compilation.md</a> — compiler pipeline</li>
+<li><a href="https://github.com/pactia-lang/spec/blob/main/docs/platform.md" target="_blank" rel="noopener noreferrer">platform.md</a> — stack packages</li>
+</ul>
+
+        </article>
+        <footer class="docs-footer">
+          <p>
+            Other spec pages (language-spec, packages, compilation, …) are on
+            <a href="index.html">the docs index</a> — hosted here as they ship;
+            until then, links open the GitHub spec repo.
+          </p>
+        </footer>
+      </main>
+    </div>
+
+  </body>
+</html>

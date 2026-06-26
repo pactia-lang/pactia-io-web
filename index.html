@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Pactia — the intent language for the AI era. You write what must stay true. AI writes how it works."
+    />
+    <title>Pactia — The intent language for the AI era</title>
+    <link rel="icon" href="assets/pactia-logo.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/site.css" />
+  </head>
+  <body data-nav-page="home">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container">
+        <a class="brand" data-site-brand href="index.html">
+          <img
+            class="brand__logo"
+            src="assets/pactia-logo.png"
+            alt=""
+            height="40"
+          />
+          PACTIA
+        </a>
+        <div class="site-header__actions" data-site-header-actions></div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy" data-reveal>
+            <h1 class="display-xl">
+              The intent language<br />
+              for the AI era
+            </h1>
+            <p class="hero-slogan">
+              You write what must stay true.<br />
+              AI writes how it works.
+            </p>
+            <div class="hero-lines">
+              <p class="hero-line is-accent">Write intent.</p>
+              <p class="hero-line is-accent">Compile contracts.</p>
+              <p class="hero-line is-accent">Verify implementations.</p>
+            </div>
+            <p class="hero-meta">
+              Like Rust compiles with <strong>rustc</strong> and ships on
+              <strong>crates.io</strong> — Pactia compiles with
+              <strong>pactiac</strong>, packages with <strong>pactia</strong>,
+              and shares intent on <strong>pactia.io</strong>.
+            </p>
+            <div class="hero-actions">
+              <a
+                class="btn btn-primary"
+                href="docs/overview.html"
+              >
+                Read the overview
+              </a>
+              <a
+                class="btn"
+                href="docs/index.html"
+              >
+                All docs
+              </a>
+              <a
+                class="btn"
+                href="https://github.com/pactia-lang"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                GitHub org
+              </a>
+            </div>
+          </div>
+
+          <div class="hero-snippet" data-reveal aria-label="Pactia example">
+            <pre class="hero-snippet__code docs-pre docs-pre--pactia"><code class="docs-code docs-code--pactia pactia-highlight"><span class="pactia-tm-keyword">pactia</span> <span class="pactia-tm-number">1.0</span>
+
+<span class="pactia-tm-keyword">import</span> <span class="pactia-tm-punct">{</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">api</span>, <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">auth</span>, <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">list</span>, <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">paginated</span>, <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">owner</span> <span class="pactia-tm-punct">}</span> <span class="pactia-tm-keyword">from</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">pactia/kernel</span>;
+<span class="pactia-tm-keyword">import</span> <span class="pactia-tm-punct">{</span> <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">rust-stack</span> <span class="pactia-tm-punct">}</span> <span class="pactia-tm-keyword">from</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">pactia/rust-stack</span>;
+
+<span class="pactia-tm-keyword">product</span> <span class="pactia-tm-type">Fleet</span> {
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Vehicle rental platform. Customers book trips; fleet owners manage vehicles.</span>
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Bearer JWT. Customers see only their bookings — admins see the full fleet.</span>
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Cursor pagination on list endpoints (default 20, max 100).</span>
+
+  <span class="pactia-tm-keyword">context</span> <span class="pactia-tm-constant">agent_rules</span> {
+    <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">./context/agent-rules.md</span><span class="pactia-tm-string">&quot;</span>,
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Never invent routes or roles not declared in this file.</span>
+<span class="pactia-tm-punct">  }</span>
+
+  <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">rust-stack</span>
+  <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">list</span>
+  <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">paginated</span>
+
+  <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">auth</span> <span class="pactia-tm-punct">{</span> <span class="pactia-tm-key">roles</span>: [<span class="pactia-tm-type">Customer</span>, <span class="pactia-tm-type">Admin</span>] <span class="pactia-tm-punct">}</span>
+  <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">owner</span>
+  <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">api</span> list_bookings {
+    <span class="pactia-tm-key">method</span>: <span class="pactia-tm-constant">GET</span>,
+    <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">/api/v1/bookings</span><span class="pactia-tm-string">&quot;</span>,
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Returns the caller's bookings only — no cross-tenant reads.</span>
+<span class="pactia-tm-punct">  }</span>
+<span class="pactia-tm-punct">}</span></code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-tight" id="problem">
+        <div class="container">
+          <p class="label" data-reveal>&gt; problem</p>
+          <h2 class="display-lg" data-reveal style="margin-bottom: 1.5rem; max-width: 22ch">
+            Durable product intent lives nowhere.
+          </h2>
+          <p class="problem-lead" data-reveal>
+            Every AI coding session starts cold. Agents re-read scattered READMEs,
+            stale OpenAPI, old ADRs, and Slack threads — then guess. Auth drifts.
+            Pagination diverges. Event shapes disagree. Senior engineers fix what
+            the model invented instead of shaping what matters.
+          </p>
+          <div class="problem-grid" data-reveal>
+            <article class="problem-item">
+              <h3>Auth drift</h3>
+              <p>Roles and scopes change between sessions. No single source of truth for who may call what.</p>
+            </article>
+            <article class="problem-item">
+              <h3>API inconsistency</h3>
+              <p>Pagination, error envelopes, and response shapes diverge across services and agents.</p>
+            </article>
+            <article class="problem-item">
+              <h3>Contract disagreement</h3>
+              <p>Producers and consumers argue from different documents — or none at all.</p>
+            </article>
+            <article class="problem-item">
+              <h3>Invented logic</h3>
+              <p>Engineers spend sprints undoing what the model guessed instead of enforcing what matters.</p>
+            </article>
+          </div>
+          <p class="slogan-banner" data-reveal>
+            The model is not the problem. The missing layer is.
+          </p>
+        </div>
+      </section>
+
+      <section class="section section-tight" id="packages">
+        <div class="container">
+          <p class="label" data-reveal>&gt; packages</p>
+          <h2 class="display-lg" data-reveal style="margin-bottom: 1rem; max-width: 20ch">
+            Share everything,<br />not just code.
+          </h2>
+          <p class="section-intro" data-reveal>
+            Chat prompts die in history. Pactia packages let you pin and reuse intent
+            the way Go modules pin code — prose, tags, macros, and attached context
+            together in every repo and agent session.
+          </p>
+          <ul class="packages-list" data-reveal>
+            <li class="packages-item">
+              <p class="packages-item__syntax"><code>import @scope/name</code></p>
+              <p class="packages-item__desc">
+                Pull in kernel tags, stack macros, compliance rules, or your org&rsquo;s standards.
+              </p>
+            </li>
+            <li class="packages-item">
+              <p class="packages-item__syntax"><code>context { path: &quot;&hellip;&quot; }</code></p>
+              <p class="packages-item__desc">
+                Attach and share markdown specs, agent rules, and schemas — versioned beside your product and reusable across packages.
+              </p>
+            </li>
+            <li class="packages-item">
+              <p class="packages-item__syntax"><code>pactia.toml</code> + <code>pactia.lock</code></p>
+              <p class="packages-item__desc">
+                Reproducible installs from git tags — same coordinates in every workspace.
+              </p>
+            </li>
+            <li class="packages-item">
+              <p class="packages-item__syntax">Prose · tags · macros · context</p>
+              <p class="packages-item__desc">
+                One package can ship agent policy, API patterns, platform defaults, and context files — not copy-paste between repos.
+              </p>
+            </li>
+          </ul>
+          <p class="packages-footnote" data-reveal>
+            Like Rust has <strong>cargo</strong> and <strong>crates.io</strong>, Pactia has
+            <strong>pactia</strong> and <strong>pactia.io</strong>.
+            <a href="docs/overview.html#packages--share-everything-not-just-code">Read more in the overview</a>
+            ·
+            <a href="https://github.com/pactia-lang/spec/blob/main/docs/packages.md" target="_blank" rel="noopener noreferrer">packages spec</a>
+          </p>
+        </div>
+      </section>
+
+      <section class="section" id="intent-line">
+        <div class="container">
+          <p class="label" data-reveal>&gt; intent_line</p>
+          <h2 class="display-lg" data-reveal style="margin-bottom: 1.5rem; max-width: 20ch">
+            The contract<br />between product<br />and AI.
+          </h2>
+          <p class="section-intro" data-reveal>
+            Above the line: what every session must inherit — regardless of model,
+            engineer, or sprint. Below the line: how it works today. Pactia never owns it.
+          </p>
+          <div class="intent-block" data-reveal>
+            <div class="intent-row intent-row--above">
+              <h3>Above the line — Intent</h3>
+              <p>
+                Entities, APIs, roles, policy, stack law, prose, tags, packages,
+                and provenance. Deterministic. Enforceable when tagged.
+              </p>
+            </div>
+            <div class="intent-gate">conformance gate</div>
+            <div class="intent-row intent-row--below">
+              <h3>Below the line — Implementation</h3>
+              <p>
+                Logic, indexes, edge cases, tuning, and copy. Owned by engineers
+                and AI — free, but checked against the contract.
+              </p>
+            </div>
+          </div>
+          <div class="intent-detail" data-reveal>
+            <div class="intent-detail-item">
+              <strong>Provenance</strong>
+              Pactia, MACRO, PACKAGE, GUIDANCE — tools know what is law vs hint.
+            </div>
+            <div class="intent-detail-item">
+              <strong>NOT_DERIVABLE</strong>
+              Facts the IR wants but source does not contain — measurable below-the-line work.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-tight" id="example">
+        <div class="container">
+          <p class="label" data-reveal>&gt; example</p>
+          <h2 class="display-lg" data-reveal style="margin-bottom: 1rem; max-width: 18ch">
+            Prose is<br />programming.
+          </h2>
+          <p class="section-intro" data-reveal>
+            Natural language is not a comment to discard — it is first-class input.
+            Same language, same pipeline, graded precision from agent rules to full spec.
+          </p>
+          <!-- landing-example-grid:start -->
+          <div class="example-grid">
+            <a
+              class="example-card"
+              href="https://github.com/pactia-lang/.github/blob/main/profile/examples/fleet-management-mini.pactia"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-reveal
+            >
+              <pre class="example-card__code docs-pre docs-pre--pactia"><code class="docs-code docs-code--pactia pactia-highlight"><span class="pactia-tm-keyword">pactia</span> <span class="pactia-tm-number">1.0</span>
+
+<span class="pactia-tm-keyword">import</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">pactia/kernel</span>;
+<span class="pactia-tm-keyword">import</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">pactia/rust-stack</span>;
+
+<span class="pactia-tm-keyword">product</span> <span class="pactia-tm-type">FleetManagement</span> {
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Track vehicles and fleets. Customers see only their own vehicles.</span>
+
+  <span class="pactia-tm-keyword">context</span> <span class="pactia-tm-constant">fleet_audit_policy</span> {
+    <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">./context/fleet/audit-policy.md</span><span class="pactia-tm-string">&quot;</span>,    
+<span class="pactia-tm-punct">  }</span>
+
+  <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">rust-stack</span>
+
+  <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">topology</span> <span class="pactia-tm-punct">{</span> <span class="pactia-tm-key">mode</span>: microservices, <span class="pactia-tm-punct">}</span>
+
+  <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">guide</span> {
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Map API errors to the platform envelope</span>
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Cursor pagination on every list — never offset</span>
+    <span class="pactia-tm-prose-marker">&gt; </span>${<span class="pactia-tm-constant">fleet_audit_policy</span>}<span class="pactia-tm-prose"> Required for admin mutation endpoints.</span>
+<span class="pactia-tm-punct">  }</span>
+
+  <span class="pactia-tm-keyword">module</span> <span class="pactia-tm-type">fleet</span> {
+
+    <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">actor</span> admins <span class="pactia-tm-punct">{</span> <span class="pactia-tm-key">role</span>: <span class="pactia-tm-type">Admin</span>, <span class="pactia-tm-key">capabilities</span>: [manage_fleets], <span class="pactia-tm-punct">}</span>
+    <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">actor</span> customers <span class="pactia-tm-punct">{</span> <span class="pactia-tm-key">role</span>: <span class="pactia-tm-type">Customer</span>, <span class="pactia-tm-key">capabilities</span>: [track_vehicles], <span class="pactia-tm-punct">}</span>
+
+    <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">rule</span> admin_only_register {
+      <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Only admins may register or decommission vehicles.</span>
+<span class="pactia-tm-punct">    }</span>
+
+    <span class="pactia-tm-keyword">model</span> {
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">enum</span> VehicleStatus <span class="pactia-tm-punct">{</span> <span class="pactia-tm-key">values</span>: [<span class="pactia-tm-type">ACTIVE</span>, <span class="pactia-tm-type">INACTIVE</span>, <span class="pactia-tm-type">DECOMMISSIONED</span>], <span class="pactia-tm-punct">}</span>
+
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">entity</span> Customer {
+        <span class="pactia-tm-tag">@@</span><span class="pactia-tm-tag">pk</span>
+        <span class="pactia-tm-key">id</span>: <span class="pactia-tm-type">uuid</span>,
+        <span class="pactia-tm-key">name</span>: <span class="pactia-tm-type">string</span>,
+        <span class="pactia-tm-key">email</span>: <span class="pactia-tm-type">string</span>,
+<span class="pactia-tm-punct">      }</span>
+
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">entity</span> Vehicle {
+        <span class="pactia-tm-tag">@@</span><span class="pactia-tm-tag">pk</span>
+        <span class="pactia-tm-key">id</span>: <span class="pactia-tm-type">uuid</span>,
+        <span class="pactia-tm-key">customerId</span>: <span class="pactia-tm-type">uuid</span>,
+        <span class="pactia-tm-key">vin</span>: <span class="pactia-tm-type">string</span>,
+        <span class="pactia-tm-key">label</span>: <span class="pactia-tm-type">string</span>,
+        <span class="pactia-tm-key">status</span>: <span class="pactia-tm-type">VehicleStatus</span>,
+<span class="pactia-tm-punct">      }</span>
+
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">entity</span> CreateVehicleRequest {
+        <span class="pactia-tm-key">customerId</span>: <span class="pactia-tm-type">uuid</span>,
+        <span class="pactia-tm-key">vin</span>: <span class="pactia-tm-type">string</span>,
+        <span class="pactia-tm-key">label</span>: <span class="pactia-tm-type">string</span>,
+<span class="pactia-tm-punct">      }</span>
+
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">entity</span> VehicleListResponse {
+        <span class="pactia-tm-key">vehicles</span>: <span class="pactia-tm-type">Vehicle</span>[],
+        <span class="pactia-tm-tag">@@</span><span class="pactia-tm-tag">nullable</span>
+        <span class="pactia-tm-key">nextCursor</span>: <span class="pactia-tm-type">string</span>,
+<span class="pactia-tm-punct">      }</span>
+
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">entity</span> CreateVehicleResponse {
+        <span class="pactia-tm-key">vehicleId</span>: <span class="pactia-tm-type">uuid</span>,
+        <span class="pactia-tm-key">vin</span>: <span class="pactia-tm-type">string</span>,
+<span class="pactia-tm-punct">      }</span>
+<span class="pactia-tm-punct">    }</span>
+
+    <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">security</span> fleet <span class="pactia-tm-punct">{</span> <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">All admin mutations must be audit-logged</span> <span class="pactia-tm-punct">}</span>
+
+    <span class="pactia-tm-keyword">service</span> <span class="pactia-tm-type">FleetService</span> {
+      <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">database</span>
+      <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Fleet tracking API</span>
+
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">auth</span> <span class="pactia-tm-punct">{</span> <span class="pactia-tm-key">roles</span>: [<span class="pactia-tm-type">Customer</span>, <span class="pactia-tm-type">Admin</span>] <span class="pactia-tm-punct">}</span>
+
+      <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">list</span>
+      <span class="pactia-tm-tag">@@</span><span class="pactia-tm-tag">output</span> <span class="pactia-tm-type">VehicleListResponse</span>
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">api</span> list_vehicles {
+        <span class="pactia-tm-key">method</span>: <span class="pactia-tm-constant">GET</span>,
+        <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">/api/v1/vehicles</span><span class="pactia-tm-string">&quot;</span>,
+<span class="pactia-tm-punct">      }</span>
+
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">auth</span> <span class="pactia-tm-punct">{</span> <span class="pactia-tm-key">roles</span>: [<span class="pactia-tm-type">Admin</span>] <span class="pactia-tm-punct">}</span>
+      <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">create</span>
+      <span class="pactia-tm-tag">@@</span><span class="pactia-tm-tag">output</span> <span class="pactia-tm-type">CreateVehicleResponse</span>
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">api</span> create_vehicle {
+        <span class="pactia-tm-key">method</span>: <span class="pactia-tm-constant">POST</span>,
+        <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">/api/v1/vehicles</span><span class="pactia-tm-string">&quot;</span>,
+<span class="pactia-tm-punct">      }</span>
+
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">test</span> admin_registers_vehicle {
+        <span class="pactia-tm-key">name</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">Admin registers a vehicle</span><span class="pactia-tm-string">&quot;</span>,
+        <span class="pactia-tm-key">when</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">Admin is logged in and POST /api/v1/vehicles with valid body</span><span class="pactia-tm-string">&quot;</span>,
+        <span class="pactia-tm-key">then</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">status is 201</span><span class="pactia-tm-string">&quot;</span>,
+<span class="pactia-tm-punct">      }</span>
+<span class="pactia-tm-punct">    }</span>
+<span class="pactia-tm-punct">  }</span>
+<span class="pactia-tm-punct">}</span></code></pre>
+              <span class="example-card__body">
+                <p class="example-card__label">Altitude 1+</p>
+                <p class="example-card__title">Tagged — structure where it helps</p>
+                <p class="example-card__desc">
+                  @actor, @entity, @api — enforceable roles, models, and routes.
+                </p>
+                <span class="example-card__link">View fixture &#8599;</span>
+              </span>
+            </a>
+            <a
+              class="example-card"
+              href="https://github.com/pactia-lang/.github/blob/main/profile/examples/fleet-management-prose.pactia"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-reveal
+            >
+              <pre class="example-card__code docs-pre docs-pre--pactia"><code class="docs-code docs-code--pactia pactia-highlight"><span class="pactia-tm-keyword">pactia</span> <span class="pactia-tm-number">1.0</span>
+
+<span class="pactia-tm-keyword">import</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">pactia/rust-stack</span>;
+
+<span class="pactia-tm-keyword">product</span> <span class="pactia-tm-type">FleetManagement</span> {
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Platform for tracking vehicles and managing fleets.</span>
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Trust is the core product value — customers must only ever see their own vehicles.</span>
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Every action that touches fleet data must be auditable.</span>
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Map all API errors to the platform envelope before returning to clients.</span>
+  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Use cursor pagination on every list endpoint — never offset.</span>
+
+  <span class="pactia-tm-keyword">context</span> <span class="pactia-tm-constant">fleet_audit_policy</span> {
+    <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">./context/fleet/audit-policy.md</span><span class="pactia-tm-string">&quot;</span>,    
+<span class="pactia-tm-punct">  }</span>
+
+  <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">rule</span> admin_audit_logged {
+    <span class="pactia-tm-prose-marker">&gt; </span>${<span class="pactia-tm-constant">fleet_audit_policy</span>}<span class="pactia-tm-prose"> Required for admin mutation endpoints.</span>
+<span class="pactia-tm-punct">  }</span>
+
+  <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">rust-stack</span>
+
+  <span class="pactia-tm-keyword">module</span> <span class="pactia-tm-type">fleet</span> {
+
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Admins manage fleets, register vehicles, and decommission vehicles.</span>
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Customers browse and track vehicles assigned to their account.</span>
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Only admins may register or decommission a vehicle.</span>
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">All admin mutations must be audit-logged.</span>
+
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">A vehicle belongs to exactly one customer.</span>
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">VIN must be unique across the platform.</span>
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">GPS position history is retained indefinitely for audit and dispute resolution.</span>
+
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Customers and admins can list vehicles.</span>
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Results are owner-scoped for customers and show the full fleet for admins.</span>
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Lists are cursor-paginated with a stable sort by creation time.</span>
+
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Only admins may create a vehicle.</span>
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Creating a vehicle requires a valid customer, VIN, label, and device binding.</span>
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">A vehicle.created notification is emitted when registration succeeds.</span>
+
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Customers who attempt to register a vehicle receive forbidden — not found masking.</span>
+    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Duplicate VIN registration returns conflict with a clear error code.</span>
+<span class="pactia-tm-punct">  }</span>
+<span class="pactia-tm-punct">}</span></code></pre>
+              <span class="example-card__body">
+                <p class="example-card__label">Altitude 0</p>
+                <p class="example-card__title">Prose — fully legal, no tags</p>
+                <p class="example-card__desc">
+                  Same story in &gt; lines — guidance-first until you add tags.
+                </p>
+                <span class="example-card__link">View fixture &#8599;</span>
+              </span>
+            </a>
+          </div>
+<!-- landing-example-grid:end -->
+          <nav class="fixture-links" data-reveal aria-label="More examples">
+            <a href="https://github.com/pactia-lang/pactiac/blob/main/test/fixtures/kernel/relay.pactia" target="_blank" rel="noopener noreferrer">relay.pactia</a>
+            <a href="https://github.com/pactia-lang/examples/tree/main/marketplace" target="_blank" rel="noopener noreferrer">marketplace</a>
+            <a href="docs/index.html">all docs</a>
+            <a href="https://github.com/pactia-lang/spec/blob/main/docs/language-spec.md" target="_blank" rel="noopener noreferrer">language spec (GitHub)</a>
+          </nav>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="container">
+          <p class="label" data-reveal>&gt; features</p>
+          <h2 class="display-lg" data-reveal style="margin-bottom: 1rem">
+            Built for infrastructure.
+          </h2>
+          <p class="section-intro" data-reveal>
+            The prompt is not the package. Chat history dies.
+            import @pactia/kernel pins the same intent in every repo, session, and agent.
+          </p>
+          <div class="feature-grid">
+            <article class="feature-card" data-reveal>
+              <h3>Model agnostic</h3>
+              <p>Cursor, Claude Code, Copilot, or custom agents — same .pactia, same lockfile, same IR.</p>
+            </article>
+            <article class="feature-card" data-reveal>
+              <h3>Graded precision</h3>
+              <p>Prose-only agent rules, mid-altitude APIs, or regulated depth. One compiler, one output path.</p>
+            </article>
+            <article class="feature-card" data-reveal>
+              <h3>Shareable packages</h3>
+              <p>@pactia/rust-stack, @pactia/kernel, vertical libs. Digest-pinned lockfiles. Users fork packages, not the language.</p>
+            </article>
+            <article class="feature-card" data-reveal>
+              <h3>Deterministic compile</h3>
+              <p>No LLM in pactiac. Facts lower to JSON with provenance — byte-for-byte reproducible builds.</p>
+            </article>
+            <article class="feature-card" data-reveal>
+              <h3>Whole-product spec</h3>
+              <p>Backend, web, mobile in one workspace. @surface and @bind keep UI intent linked to APIs.</p>
+            </article>
+            <article class="feature-card" data-reveal>
+              <h3>AI-native artifact</h3>
+              <p>Durable .pactia files — not disposable chat. Permanent context per module and service.</p>
+            </article>
+          </div>
+          <p class="slogan-banner" data-reveal>
+            Users fork packages, not the language.
+          </p>
+        </div>
+      </section>
+
+      <section class="section section-tight" id="open-source">
+        <div class="container">
+          <p class="label" data-reveal>&gt; open_source</p>
+          <h2 class="display-lg" data-reveal style="margin-bottom: 1rem">
+            The stack.
+          </h2>
+          <p class="section-intro" data-reveal>
+            Open source. MIT licensed. Spec, compiler, package manager, and editor —
+            each repo owns one layer of the toolchain.
+          </p>
+          <div class="repo-list">
+            <a class="repo-row" href="https://github.com/pactia-lang/spec" target="_blank" rel="noopener noreferrer" data-reveal>
+              <div>
+                <div class="repo-row__name">spec</div>
+                <div class="repo-row__desc">Pactia 1.2 — grammar, tags, packages, attach rules</div>
+              </div>
+              <span class="repo-row__arrow" aria-hidden="true">&#8599;</span>
+            </a>
+            <a class="repo-row" href="https://github.com/pactia-lang/pactiac" target="_blank" rel="noopener noreferrer" data-reveal>
+              <div>
+                <div class="repo-row__name">pactiac</div>
+                <div class="repo-row__desc">Deterministic compile to module-scoped AI-neutral IR</div>
+              </div>
+              <span class="repo-row__arrow" aria-hidden="true">&#8599;</span>
+            </a>
+            <a class="repo-row" href="https://github.com/pactia-lang/pactia" target="_blank" rel="noopener noreferrer" data-reveal>
+              <div>
+                <div class="repo-row__name">pactia</div>
+                <div class="repo-row__desc">init, add, install, update, build — packages on pactia.io</div>
+              </div>
+              <span class="repo-row__arrow" aria-hidden="true">&#8599;</span>
+            </a>
+            <a class="repo-row" href="https://github.com/pactia-lang/vscode-pactia" target="_blank" rel="noopener noreferrer" data-reveal>
+              <div>
+                <div class="repo-row__name">vscode-pactia</div>
+                <div class="repo-row__desc">Syntax highlighting for .pactia in VS Code and Cursor</div>
+              </div>
+              <span class="repo-row__arrow" aria-hidden="true">&#8599;</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-tight" id="github">
+        <div class="container">
+          <p class="label" data-reveal>&gt; get_started</p>
+          <h2 class="display-lg" data-reveal style="margin-bottom: 1rem">
+            Start building on intent.
+          </h2>
+          <p class="section-intro" data-reveal>
+            In one sentence: the durable, versioned layer between human intent
+            and AI implementation.
+          </p>
+          <div class="install-block" data-reveal>
+            <pre><code><span class="cmt"># Package manager + compiler</span>
+curl -fsSL https://raw.githubusercontent.com/pactia-lang/pactia/main/scripts/install-pactia.sh | bash
+
+pactia init my-product --name MyProduct
+pactia add @pactia/rust-stack ^1.0
+pactia build -C my-product</code></pre>
+          </div>
+          <div class="cta-actions" data-reveal>
+            <a
+              class="btn btn-primary"
+              href="https://github.com/pactia-lang"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View on GitHub
+            </a>
+            <a class="btn" href="docs/overview.html">Read the overview</a>
+            <a
+              class="btn"
+              href="https://github.com/pactia-lang/spec"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Read the spec
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-row">
+        <span>pactia-lang contributors · MIT</span>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="docs/overview.html">Overview</a>
+          <a href="docs/index.html">Docs</a>
+          <a href="https://github.com/pactia-lang/spec" target="_blank" rel="noopener noreferrer">Spec repo</a>
+          <a href="https://github.com/pactia-lang/pactiac" target="_blank" rel="noopener noreferrer">pactiac</a>
+          <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">License</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script src="assets/site-nav.js"></script>
+    <script src="assets/landing.js"></script>
+  </body>
+</html>
