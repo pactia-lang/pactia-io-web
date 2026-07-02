@@ -47,6 +47,7 @@
               You write what must stay true.<br />
               AI writes how it works.
             </p>
+            <p class="hero-version">Spec v1.2 · source files declare <code>pactia 1.0</code></p>
             <div class="hero-lines">
               <p class="hero-line is-accent">Write intent.</p>
               <p class="hero-line is-accent">Compile contracts.</p>
@@ -85,29 +86,34 @@
           <div class="hero-snippet" data-reveal aria-label="Pactia example">
             <pre class="hero-snippet__code docs-pre docs-pre--pactia"><code class="docs-code docs-code--pactia pactia-highlight"><span class="pactia-tm-keyword">pactia</span> <span class="pactia-tm-number">1.0</span>
 
-<span class="pactia-tm-keyword">import</span> <span class="pactia-tm-punct">{</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">api</span>, <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">auth</span>, <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">list</span>, <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">paginated</span>, <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">owner</span> <span class="pactia-tm-punct">}</span> <span class="pactia-tm-keyword">from</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">pactia/kernel</span>;
-<span class="pactia-tm-keyword">import</span> <span class="pactia-tm-punct">{</span> <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">rust-stack</span> <span class="pactia-tm-punct">}</span> <span class="pactia-tm-keyword">from</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">pactia/rust-stack</span>;
+<span class="pactia-tm-keyword">import</span> <span class="pactia-tm-punct">{</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">api</span>, <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">auth</span> <span class="pactia-tm-punct">}</span> <span class="pactia-tm-keyword">from</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">pactia/kernel</span>;
+<span class="pactia-tm-keyword">import</span> <span class="pactia-tm-punct">{</span> <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">rust-stack</span>, <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">list</span>, <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">paginated</span>, <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">owner</span> <span class="pactia-tm-punct">}</span> <span class="pactia-tm-keyword">from</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">pactia/rust-stack</span>;
 
 <span class="pactia-tm-keyword">product</span> <span class="pactia-tm-type">Fleet</span> {
-  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Vehicle rental platform. Customers book trips; fleet owners manage vehicles.</span>
-  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Bearer JWT. Customers see only their bookings — admins see the full fleet.</span>
-  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Cursor pagination on list endpoints (default 20, max 100).</span>
+  <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Vehicle rental platform. Customers book trips; fleet owners manage vehicles.</span>
+  <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Bearer JWT. Customers see only their bookings — admins see the full fleet.</span>
+  <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Cursor pagination on list endpoints (default 20, max 100).</span>
 
   <span class="pactia-tm-keyword">context</span> <span class="pactia-tm-constant">agent_rules</span> {
-    <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">./context/agent-rules.md</span><span class="pactia-tm-string">&quot;</span>,
-    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Never invent routes or roles not declared in this file.</span>
+    <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">"</span><span class="pactia-tm-string">./context/agent-rules.md</span><span class="pactia-tm-string">"</span>,
+    <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Never invent routes or roles not declared in this file.</span>
 <span class="pactia-tm-punct">  }</span>
 
   <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">rust-stack</span>
-  <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">list</span>
-  <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">paginated</span>
 
-  <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">auth</span> <span class="pactia-tm-punct">{</span> <span class="pactia-tm-key">roles</span>: [<span class="pactia-tm-type">Customer</span>, <span class="pactia-tm-type">Admin</span>] <span class="pactia-tm-punct">}</span>
-  <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">owner</span>
-  <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">api</span> list_bookings {
-    <span class="pactia-tm-key">method</span>: <span class="pactia-tm-constant">GET</span>,
-    <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">/api/v1/bookings</span><span class="pactia-tm-string">&quot;</span>,
-    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Returns the caller's bookings only — no cross-tenant reads.</span>
+  <span class="pactia-tm-keyword">module</span> <span class="pactia-tm-type">fleet</span> {
+    <span class="pactia-tm-keyword">service</span> <span class="pactia-tm-type">FleetService</span> {
+      <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">list</span>
+      <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">paginated</span>
+
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">auth</span> <span class="pactia-tm-punct">{</span> <span class="pactia-tm-key">roles</span>: [<span class="pactia-tm-type">Customer</span>, <span class="pactia-tm-type">Admin</span>] <span class="pactia-tm-punct">}</span>
+      <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">owner</span>
+      <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">api</span> list_bookings {
+        <span class="pactia-tm-key">method</span>: <span class="pactia-tm-constant">GET</span>,
+        <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">"</span><span class="pactia-tm-string">/api/v1/bookings</span><span class="pactia-tm-string">"</span>,
+        <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Returns the caller's bookings only — no cross-tenant reads.</span>
+<span class="pactia-tm-punct">      }</span>
+<span class="pactia-tm-punct">    }</span>
 <span class="pactia-tm-punct">  }</span>
 <span class="pactia-tm-punct">}</span></code></pre>
           </div>
@@ -116,7 +122,7 @@
 
       <section class="section section-tight" id="problem">
         <div class="container">
-          <p class="label" data-reveal>&gt; problem</p>
+          <p class="label" data-reveal>> problem</p>
           <h2 class="display-lg" data-reveal style="margin-bottom: 1.5rem; max-width: 22ch">
             Durable product intent lives nowhere.
           </h2>
@@ -152,7 +158,7 @@
 
       <section class="section section-tight" id="packages">
         <div class="container">
-          <p class="label" data-reveal>&gt; packages</p>
+          <p class="label" data-reveal>> packages</p>
           <h2 class="display-lg" data-reveal style="margin-bottom: 1rem; max-width: 20ch">
             Share everything,<br />not just code.
           </h2>
@@ -169,7 +175,7 @@
               </p>
             </li>
             <li class="packages-item">
-              <p class="packages-item__syntax"><code>context { path: &quot;&hellip;&quot; }</code></p>
+              <p class="packages-item__syntax"><code>context { path: "&hellip;" }</code></p>
               <p class="packages-item__desc">
                 Attach and share markdown specs, agent rules, and schemas — versioned beside your product and reusable across packages.
               </p>
@@ -199,7 +205,7 @@
 
       <section class="section" id="intent-line">
         <div class="container">
-          <p class="label" data-reveal>&gt; intent_line</p>
+          <p class="label" data-reveal>> intent_line</p>
           <h2 class="display-lg" data-reveal style="margin-bottom: 1.5rem; max-width: 20ch">
             The contract<br />between product<br />and AI.
           </h2>
@@ -239,7 +245,7 @@
 
       <section class="section section-tight" id="example">
         <div class="container">
-          <p class="label" data-reveal>&gt; example</p>
+          <p class="label" data-reveal>> example</p>
           <h2 class="display-lg" data-reveal style="margin-bottom: 1rem; max-width: 18ch">
             Prose is<br />programming.
           </h2>
@@ -262,10 +268,10 @@
 <span class="pactia-tm-keyword">import</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">pactia/rust-stack</span>;
 
 <span class="pactia-tm-keyword">product</span> <span class="pactia-tm-type">FleetManagement</span> {
-  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Track vehicles and fleets. Customers see only their own vehicles.</span>
+  <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Track vehicles and fleets. Customers see only their own vehicles.</span>
 
   <span class="pactia-tm-keyword">context</span> <span class="pactia-tm-constant">fleet_audit_policy</span> {
-    <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">./context/fleet/audit-policy.md</span><span class="pactia-tm-string">&quot;</span>,    
+    <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">"</span><span class="pactia-tm-string">./context/fleet/audit-policy.md</span><span class="pactia-tm-string">"</span>,    
 <span class="pactia-tm-punct">  }</span>
 
   <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">rust-stack</span>
@@ -273,9 +279,9 @@
   <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">topology</span> <span class="pactia-tm-punct">{</span> <span class="pactia-tm-key">mode</span>: microservices, <span class="pactia-tm-punct">}</span>
 
   <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">guide</span> {
-    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Map API errors to the platform envelope</span>
-    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Cursor pagination on every list — never offset</span>
-    <span class="pactia-tm-prose-marker">&gt; </span>${<span class="pactia-tm-constant">fleet_audit_policy</span>}<span class="pactia-tm-prose"> Required for admin mutation endpoints.</span>
+    <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Map API errors to the platform envelope</span>
+    <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Cursor pagination on every list — never offset</span>
+    <span class="pactia-tm-prose-marker">> </span>${<span class="pactia-tm-constant">fleet_audit_policy</span>}<span class="pactia-tm-prose"> Required for admin mutation endpoints.</span>
 <span class="pactia-tm-punct">  }</span>
 
   <span class="pactia-tm-keyword">module</span> <span class="pactia-tm-type">fleet</span> {
@@ -284,7 +290,7 @@
     <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">actor</span> customers <span class="pactia-tm-punct">{</span> <span class="pactia-tm-key">role</span>: <span class="pactia-tm-type">Customer</span>, <span class="pactia-tm-key">capabilities</span>: [track_vehicles], <span class="pactia-tm-punct">}</span>
 
     <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">rule</span> admin_only_register {
-      <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Only admins may register or decommission vehicles.</span>
+      <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Only admins may register or decommission vehicles.</span>
 <span class="pactia-tm-punct">    }</span>
 
     <span class="pactia-tm-keyword">model</span> {
@@ -324,11 +330,11 @@
 <span class="pactia-tm-punct">      }</span>
 <span class="pactia-tm-punct">    }</span>
 
-    <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">security</span> fleet <span class="pactia-tm-punct">{</span> <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">All admin mutations must be audit-logged</span> <span class="pactia-tm-punct">}</span>
+    <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">security</span> fleet <span class="pactia-tm-punct">{</span> <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">All admin mutations must be audit-logged</span> <span class="pactia-tm-punct">}</span>
 
     <span class="pactia-tm-keyword">service</span> <span class="pactia-tm-type">FleetService</span> {
       <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">database</span>
-      <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Fleet tracking API</span>
+      <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Fleet tracking API</span>
 
       <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">auth</span> <span class="pactia-tm-punct">{</span> <span class="pactia-tm-key">roles</span>: [<span class="pactia-tm-type">Customer</span>, <span class="pactia-tm-type">Admin</span>] <span class="pactia-tm-punct">}</span>
 
@@ -336,7 +342,7 @@
       <span class="pactia-tm-tag">@@</span><span class="pactia-tm-tag">output</span> <span class="pactia-tm-type">VehicleListResponse</span>
       <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">api</span> list_vehicles {
         <span class="pactia-tm-key">method</span>: <span class="pactia-tm-constant">GET</span>,
-        <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">/api/v1/vehicles</span><span class="pactia-tm-string">&quot;</span>,
+        <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">"</span><span class="pactia-tm-string">/api/v1/vehicles</span><span class="pactia-tm-string">"</span>,
 <span class="pactia-tm-punct">      }</span>
 
       <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">auth</span> <span class="pactia-tm-punct">{</span> <span class="pactia-tm-key">roles</span>: [<span class="pactia-tm-type">Admin</span>] <span class="pactia-tm-punct">}</span>
@@ -344,13 +350,13 @@
       <span class="pactia-tm-tag">@@</span><span class="pactia-tm-tag">output</span> <span class="pactia-tm-type">CreateVehicleResponse</span>
       <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">api</span> create_vehicle {
         <span class="pactia-tm-key">method</span>: <span class="pactia-tm-constant">POST</span>,
-        <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">/api/v1/vehicles</span><span class="pactia-tm-string">&quot;</span>,
+        <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">"</span><span class="pactia-tm-string">/api/v1/vehicles</span><span class="pactia-tm-string">"</span>,
 <span class="pactia-tm-punct">      }</span>
 
       <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">test</span> admin_registers_vehicle {
-        <span class="pactia-tm-key">name</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">Admin registers a vehicle</span><span class="pactia-tm-string">&quot;</span>,
-        <span class="pactia-tm-key">when</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">Admin is logged in and POST /api/v1/vehicles with valid body</span><span class="pactia-tm-string">&quot;</span>,
-        <span class="pactia-tm-key">then</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">status is 201</span><span class="pactia-tm-string">&quot;</span>,
+        <span class="pactia-tm-key">name</span>: <span class="pactia-tm-string">"</span><span class="pactia-tm-string">Admin registers a vehicle</span><span class="pactia-tm-string">"</span>,
+        <span class="pactia-tm-key">when</span>: <span class="pactia-tm-string">"</span><span class="pactia-tm-string">Admin is logged in and POST /api/v1/vehicles with valid body</span><span class="pactia-tm-string">"</span>,
+        <span class="pactia-tm-key">then</span>: <span class="pactia-tm-string">"</span><span class="pactia-tm-string">status is 201</span><span class="pactia-tm-string">"</span>,
 <span class="pactia-tm-punct">      }</span>
 <span class="pactia-tm-punct">    }</span>
 <span class="pactia-tm-punct">  }</span>
@@ -376,50 +382,50 @@
 <span class="pactia-tm-keyword">import</span> <span class="pactia-tm-tag">@</span><span class="pactia-tm-path">pactia/rust-stack</span>;
 
 <span class="pactia-tm-keyword">product</span> <span class="pactia-tm-type">FleetManagement</span> {
-  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Platform for tracking vehicles and managing fleets.</span>
-  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Trust is the core product value — customers must only ever see their own vehicles.</span>
-  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Every action that touches fleet data must be auditable.</span>
-  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Map all API errors to the platform envelope before returning to clients.</span>
-  <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Use cursor pagination on every list endpoint — never offset.</span>
+  <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Platform for tracking vehicles and managing fleets.</span>
+  <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Trust is the core product value — customers must only ever see their own vehicles.</span>
+  <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Every action that touches fleet data must be auditable.</span>
+  <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Map all API errors to the platform envelope before returning to clients.</span>
+  <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Use cursor pagination on every list endpoint — never offset.</span>
 
   <span class="pactia-tm-keyword">context</span> <span class="pactia-tm-constant">fleet_audit_policy</span> {
-    <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">&quot;</span><span class="pactia-tm-string">./context/fleet/audit-policy.md</span><span class="pactia-tm-string">&quot;</span>,    
+    <span class="pactia-tm-key">path</span>: <span class="pactia-tm-string">"</span><span class="pactia-tm-string">./context/fleet/audit-policy.md</span><span class="pactia-tm-string">"</span>,    
 <span class="pactia-tm-punct">  }</span>
 
   <span class="pactia-tm-tag">@</span><span class="pactia-tm-tag">rule</span> admin_audit_logged {
-    <span class="pactia-tm-prose-marker">&gt; </span>${<span class="pactia-tm-constant">fleet_audit_policy</span>}<span class="pactia-tm-prose"> Required for admin mutation endpoints.</span>
+    <span class="pactia-tm-prose-marker">> </span>${<span class="pactia-tm-constant">fleet_audit_policy</span>}<span class="pactia-tm-prose"> Required for admin mutation endpoints.</span>
 <span class="pactia-tm-punct">  }</span>
 
   <span class="pactia-tm-tag">#</span><span class="pactia-tm-tag">rust-stack</span>
 
   <span class="pactia-tm-keyword">module</span> <span class="pactia-tm-type">fleet</span> {
 
-    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Admins manage fleets, register vehicles, and decommission vehicles.</span>
-    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Customers browse and track vehicles assigned to their account.</span>
-    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Only admins may register or decommission a vehicle.</span>
-    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">All admin mutations must be audit-logged.</span>
+    <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Admins manage fleets, register vehicles, and decommission vehicles.</span>
+    <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Customers browse and track vehicles assigned to their account.</span>
+    <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Only admins may register or decommission a vehicle.</span>
+    <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">All admin mutations must be audit-logged.</span>
 
-    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">A vehicle belongs to exactly one customer.</span>
-    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">VIN must be unique across the platform.</span>
-    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">GPS position history is retained indefinitely for audit and dispute resolution.</span>
+    <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">A vehicle belongs to exactly one customer.</span>
+    <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">VIN must be unique across the platform.</span>
+    <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">GPS position history is retained indefinitely for audit and dispute resolution.</span>
 
-    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Customers and admins can list vehicles.</span>
-    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Results are owner-scoped for customers and show the full fleet for admins.</span>
-    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Lists are cursor-paginated with a stable sort by creation time.</span>
+    <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Customers and admins can list vehicles.</span>
+    <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Results are owner-scoped for customers and show the full fleet for admins.</span>
+    <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Lists are cursor-paginated with a stable sort by creation time.</span>
 
-    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Only admins may create a vehicle.</span>
-    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Creating a vehicle requires a valid customer, VIN, label, and device binding.</span>
-    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">A vehicle.created notification is emitted when registration succeeds.</span>
+    <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Only admins may create a vehicle.</span>
+    <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Creating a vehicle requires a valid customer, VIN, label, and device binding.</span>
+    <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">A vehicle.created notification is emitted when registration succeeds.</span>
 
-    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Customers who attempt to register a vehicle receive forbidden — not found masking.</span>
-    <span class="pactia-tm-prose-marker">&gt; </span><span class="pactia-tm-prose">Duplicate VIN registration returns conflict with a clear error code.</span>
+    <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Customers who attempt to register a vehicle receive forbidden — not found masking.</span>
+    <span class="pactia-tm-prose-marker">> </span><span class="pactia-tm-prose">Duplicate VIN registration returns conflict with a clear error code.</span>
 <span class="pactia-tm-punct">  }</span>
 <span class="pactia-tm-punct">}</span></code></pre>
               <span class="example-card__body">
                 <p class="example-card__label">Altitude 0</p>
                 <p class="example-card__title">Prose — fully legal, no tags</p>
                 <p class="example-card__desc">
-                  Same story in &gt; lines — guidance-first until you add tags.
+                  Same story in > lines — guidance-first until you add tags.
                 </p>
                 <span class="example-card__link">View fixture &#8599;</span>
               </span>
@@ -437,7 +443,7 @@
 
       <section class="section" id="features">
         <div class="container">
-          <p class="label" data-reveal>&gt; features</p>
+          <p class="label" data-reveal>> features</p>
           <h2 class="display-lg" data-reveal style="margin-bottom: 1rem">
             Built for infrastructure.
           </h2>
@@ -479,7 +485,7 @@
 
       <section class="section section-tight" id="open-source">
         <div class="container">
-          <p class="label" data-reveal>&gt; open_source</p>
+          <p class="label" data-reveal>> open_source</p>
           <h2 class="display-lg" data-reveal style="margin-bottom: 1rem">
             The stack.
           </h2>
@@ -522,7 +528,7 @@
 
       <section class="section section-tight" id="github">
         <div class="container">
-          <p class="label" data-reveal>&gt; get_started</p>
+          <p class="label" data-reveal>> get_started</p>
           <h2 class="display-lg" data-reveal style="margin-bottom: 1rem">
             Start building on intent.
           </h2>
